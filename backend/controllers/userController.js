@@ -30,6 +30,7 @@ const userRegister = asyncHandler(async (req, res) => {
             _id: client._id,
             name: client.name,
             email: client.email,
+            token: generateToken(client._id),
         })
     } else {
         res.status(400);
@@ -42,17 +43,18 @@ const userRegister = asyncHandler(async (req, res) => {
 // @ route  POST /api/users/login
 const userLogin = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
-    if(!email || !password){
+    if (!email || !password) {
         res.status(400)
         throw new Error("Fields can't be empty.")
     }
     //find that user
-    const user = await User.findOne({'email': email});
-    if(user && (await bcrypt.compare(password, user.password))){
+    const user = await User.findOne({ 'email': email });
+    if (user && (await bcrypt.compare(password, user.password))) {
         res.status(200).json({
             _id: user._id,
             name: user.name,
             email: user.email,
+            token: generateToken(user._id),
         })
     } else {
         res.status(400);
@@ -63,8 +65,18 @@ const userLogin = asyncHandler(async (req, res) => {
 // @ Private
 // @ route  GET /api/users/me
 const meGoals = asyncHandler(async (req, res) => {
-    res.status(200).json('goals got');
+    res.status(200).json({
+        id: req.user.id,
+        name: req.user.name,
+        email: req.user.email,
+    });
 })
+
+const generateToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+        expiresIn: '30d',
+    })
+}
 module.exports = {
     userRegister,
     userLogin,
