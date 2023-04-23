@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "description": "Goal setter app for youtube",
   "main": "server.js",
+    "engines": {
+    "node": "18.x"
+  },
   "scripts": {
-    "start": "node backend/server.js",
+    "start": "node server.js",
     "server": "nodemon backend/server.js"
   },
   "author": "Sheryar Ahmed",
