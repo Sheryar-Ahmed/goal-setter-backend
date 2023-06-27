@@ -7,9 +7,8 @@ const connectDB = require('./config/db');
 connectDB();
 const app = express();
 //added as middleware
-app.use(cors({
-    origin: "*"
-}))
+app.use(cors({ origin: `${process.env.REACT_APP_BASE_URL}`, credentials: true }));
+
 app.use(express.json())
 app.use(express.urlencoded({extended: false}));
 app.get('/', (req, res) =>{
