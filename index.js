@@ -1,11 +1,15 @@
 const express = require('express');
 require('dotenv').config();
 const port = process.env.PORT || 5000;
+const cors = require('cors');
 const {errorHanlder} = require('./middlewares/errorMiddleware.js');
 const connectDB = require('./config/db');
 connectDB();
 const app = express();
 //added as middleware
+app.use(cors({
+    origin: "*"
+}))
 app.use(express.json())
 app.use(express.urlencoded({extended: false}));
 app.get('/', (req, res) =>{
