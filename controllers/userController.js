@@ -2,7 +2,7 @@ const asyncHandler = require('express-async-handler'); // imported express async
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/userModel');
-
+const setCorsHeaders = require('../middlewares/corsmiddleware');
 // @ user Registration 
 // @ public
 // @ route  POST /api/goals
@@ -78,7 +78,7 @@ const generateToken = (id) => {
     })
 }
 module.exports = {
-    userRegister,
-    userLogin,
-    meGoals,
+    userRegister: setCorsHeaders(userRegister),
+    userLogin: setCorsHeaders(userLogin),
+    meGoals: setCorsHeaders(meGoals),
 }
